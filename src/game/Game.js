@@ -1,4 +1,4 @@
-make("Game", function(ClassUtil, assetsModel, stage, GameBackground) {
+make("Game", function(ClassUtil, assetsModel, view) {
 	"use strict";
 
 	function Game() {
@@ -7,7 +7,7 @@ make("Game", function(ClassUtil, assetsModel, stage, GameBackground) {
 	}
 
 	Game.prototype.onAssetsLoaded = function() {
-	    stage.addChild(new GameBackground());
+	    view.init();
 	};
 
 	return Game;
