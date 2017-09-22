@@ -1,0 +1,14 @@
+{
+  "assets": [
+    {"dir": "images/SYM1.png"},
+    {"dir": "images/SYM3.png"},
+    {"dir": "images/SYM4.png"},
+    {"dir": "images/SYM5.png"},
+    {"dir": "images/SYM6.png"},
+    {"dir": "images/SYM7.png"},
+    {"dir": "images/Bet_Line.png"},
+    {"dir": "images/BG.png"},
+    {"dir": "images/BTN_Spin.png"},
+    {"dir": "images/BTN_Spin_d.png"}
+  ]
+}
