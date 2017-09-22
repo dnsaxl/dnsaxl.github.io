@@ -12,7 +12,6 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 		this.parent = null;
 		this.interactive = false;
 		this.visible = true;
-		this.mask = null;
 	}
 
 	ClassUtil.extend(DisplayObject, EventEmitter);

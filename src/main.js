@@ -56,8 +56,6 @@ make("main", function(assetsModel, stage, Sprite, Container, Tween, Background, 
 		);
 
 		btn.x = btn.y = 400;
-		//bg.mask = true;
-		s1.mask = s2;
 
 		stage.addChild(btn);
 	});
