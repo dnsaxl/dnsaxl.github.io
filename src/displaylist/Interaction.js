@@ -46,11 +46,8 @@ make("Interaction", function(ClassUtil) {
 					}
 				}
 			}
-			return this.hitTest(target, event)
 		}
-		else {
-			return this.hitTest(target, event)
-		}
+		return this.hitTest(target, event);
 	};
 
 	return Interaction;

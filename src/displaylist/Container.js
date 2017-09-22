@@ -60,11 +60,9 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 
 	Container.prototype.render = function(renderer) {
 		DisplayObject.prototype.render.apply(this, arguments);
-		//renderer.save();
 		for (var i = 0, j = this.children.length; i < j; ++i) {
 			this.children[i].render(renderer);
 		}
-		//renderer.restore();
 	};
 
 	return Container;
