@@ -1,4 +1,4 @@
-make("Game", function(ClassUtil, assetsModel, view) {
+make("Game", function(ClassUtil, assetsModel, view, msg) {
 	"use strict";
 
 	function Game() {
@@ -8,6 +8,10 @@ make("Game", function(ClassUtil, assetsModel, view) {
 
 	Game.prototype.onAssetsLoaded = function() {
 	    view.init();
+		setTimeout(function() {
+
+		msg.emit(msg.EVENTS.GAME.RESIZE);
+		}, 300);
 	};
 
 	return Game;

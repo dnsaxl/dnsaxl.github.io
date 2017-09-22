@@ -43,8 +43,8 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 	};
 
 	DisplayObject.prototype.update = function(world) {
-		this.world.x = world.x + this.x - this.anchorX * this.width;
-		this.world.y = world.y + this.y - this.anchorY * this.height;
+		this.world.x = world.x + this.x - this.anchorX * this.world.sx * this.origWidth;
+		this.world.y = world.y + this.y - this.anchorY * this.world.sy * this.origHeight;
 		this.world.sx = world.sx * this.scaleX;
 		this.world.sy = world.sy * this.scaleY;
 		this.world.w = this.world.sx * this.origWidth;

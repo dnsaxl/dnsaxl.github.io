@@ -26,5 +26,23 @@ make("Sprite", function(DisplayObject, ClassUtil, assetsModel, MathUtil) {
 		renderer.restore();
 	};
 
+	Object.defineProperty(Sprite.prototype, "width", {
+		get: function() {
+			return this.scaleX * this.origWidth;
+		},
+		set: function(value) {
+			this.scaleX = value / this.origWidth;
+		}
+	});
+
+	Object.defineProperty(Sprite.prototype, "height", {
+		get: function() {
+			return this.scaleY * this.origHeight;
+		},
+		set: function(value) {
+			this.scaleY = value / this.origHeight;
+		}
+	});
+
 	return Sprite;
 });
