@@ -43,13 +43,14 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 	};
 
 	DisplayObject.prototype.update = function(world) {
-		this.world.x = world.x + this.x - this.anchorX * this.world.sx * this.origWidth;
-		this.world.y = world.y + this.y - this.anchorY * this.world.sy * this.origHeight;
-		this.world.sx = world.sx * this.scaleX;
-		this.world.sy = world.sy * this.scaleY;
-		this.world.w = this.world.sx * this.origWidth;
-		this.world.h = this.world.sy * this.origHeight;
-		this.world.alpha = world.alpha * this.alpha;
+		var w = this.world;
+		w.x = world.x + this.x - this.anchorX * w.sx * this.origWidth;
+		w.y = world.y + this.y - this.anchorY * w.sy * this.origHeight;
+		w.sx = world.sx * this.scaleX;
+		w.sy = world.sy * this.scaleY;
+		w.w = w.sx * this.origWidth;
+		w.h = w.sy * this.origHeight;
+		w.alpha = world.alpha * this.alpha;
 	};
 
 	DisplayObject.prototype.render = function(renderer) {

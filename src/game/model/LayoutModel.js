@@ -17,8 +17,8 @@ make("LayoutModel", function(gameModel) {
 
 		this.background = {
 			scale: this.SCALE.TO_FIT,
-			horizontal: this.ALIGN.RIGHT,
-			vertical: this.ALIGN.BOTTOM
+			horizontal: this.ALIGN.CENTER,
+			vertical: this.ALIGN.TOP
 		};
 	}
 

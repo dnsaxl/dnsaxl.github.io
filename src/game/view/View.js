@@ -7,7 +7,7 @@ make("View", function(stage, GameBackground, SpinButton) {
 
 	View.prototype.init = function() {
 		this.background = stage.addChild(new GameBackground());
-		//this.spinButton = stage.addChild(new SpinButton());
+		this.spinButton = stage.addChild(new SpinButton());
 	};
 
 	return View;
