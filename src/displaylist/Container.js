@@ -33,7 +33,7 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 	};
 
 	Container.prototype.removeChildren = function() {
-		while(this.children.length){
+		while (this.children.length) {
 			this.children.pop().parent = null;
 		}
 		this.updateBounds();
@@ -48,14 +48,22 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 	};
 
 	Container.prototype.updateBounds = function() {
-		var widths = [0], heights = [0];
+		var minx = 0, maxx = 0, miny = 0, maxy = 0;
 		for (var i = 0, j = this.children.length; i < j; ++i) {
 			var c = this.children[i];
-			widths.push(c.x + c.width);
-			heights.push(c.y + c.height);
+			var rw = c.origWidth * c.world.sx;
+			var rh = c.origHeight * c.world.sy;
+
+			var rx = c.x - c.anchorX * rw;
+			var ry = c.y - c.anchorY * rh;
+			minx = Math.min(rx, minx);
+			miny = Math.min(ry, miny);
+			maxx = Math.max(rx + rw, maxx);
+			maxy = Math.max(ry + rh, maxy);
 		}
-		this.origWidth = Math.max.apply(null, widths);
-		this.origHeight = Math.max.apply(null, heights);
+		this.origWidth = (maxx - minx) / this.scaleX;
+		this.origHeight = (maxy - miny) / this.scaleY;
+
 	};
 
 	Container.prototype.render = function(renderer) {

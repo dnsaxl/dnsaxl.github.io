@@ -7,8 +7,8 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 		this.x = this.y = 0;
 		this.origWidth = this.origHeight = 0;
 		this.scaleX = this.scaleY = this.alpha = 1;
+		this.anchorX = this.anchorY = 0;
 		this.world = {x: 0, y: 0, sx: 1, sy: 1, alpha: 1};
-		this.stage = null;
 		this.parent = null;
 		this.interactive = false;
 		this.visible = true;
@@ -34,16 +34,21 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 		}
 	});
 
-
 	DisplayObject.prototype.setScale = function(value) {
 		this.scaleX = this.scaleY = value;
 	};
 
+	DisplayObject.prototype.setAnchor = function(value) {
+		this.anchorX = this.anchorY = value;
+	};
+
 	DisplayObject.prototype.update = function(world) {
-		this.world.x = world.x + this.x;
-		this.world.y = world.y + this.y;
+		this.world.x = world.x + this.x - this.anchorX * this.width;
+		this.world.y = world.y + this.y - this.anchorY * this.height;
 		this.world.sx = world.sx * this.scaleX;
 		this.world.sy = world.sy * this.scaleY;
+		this.world.w = this.world.sx * this.origWidth;
+		this.world.h = this.world.sy * this.origHeight;
 		this.world.alpha = world.alpha * this.alpha;
 	};
 
@@ -52,7 +57,8 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 	};
 
 	DisplayObject.prototype.hitTest = function(x, y) {
-		return MathUtil.containsPoint(this.world.x, this.world.y, this.width, this.height, x, y);
+		var w = this.world;
+		return MathUtil.containsPoint(w.x, w.y, w.w, w.h, x, y);
 	};
 
 	return DisplayObject;
