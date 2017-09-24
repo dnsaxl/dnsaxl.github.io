@@ -11,7 +11,7 @@ make("Game", function(ClassUtil, assetsModel, view, msg) {
 		setTimeout(function() {
 
 		msg.emit(msg.EVENTS.GAME.RESIZE);
-		}, 300);
+		}, 30);
 	};
 
 	return Game;

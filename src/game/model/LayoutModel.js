@@ -1,7 +1,8 @@
-make("LayoutModel", function(gameModel) {
+make("LayoutModel", function(ClassUtil, Model, gameModel) {
 	"use strict";
 
 	function LayoutModel() {
+		Model.apply(this, arguments);
 		this.SCALE = {
 			TO_FILL: 1,
 			TO_FIT: 3,
@@ -21,6 +22,8 @@ make("LayoutModel", function(gameModel) {
 			vertical: this.ALIGN.TOP
 		};
 	}
+
+	ClassUtil.extend(LayoutModel, Model);
 
 	LayoutModel.prototype.getAlignOffset = function(target, align, dimension) {
 		var a = gameModel.canvas[dimension], b = target[dimension];

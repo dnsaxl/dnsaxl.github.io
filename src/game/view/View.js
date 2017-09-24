@@ -1,4 +1,4 @@
-make("View", function(stage, GameBackground, SpinButton) {
+make("View", function(stage, GameBackground, SpinButton, SymbolsContainer) {
 	"use strict";
 
 	function View() {
@@ -7,8 +7,10 @@ make("View", function(stage, GameBackground, SpinButton) {
 
 	View.prototype.init = function() {
 		this.background = stage.addChild(new GameBackground());
+		this.symbolsContainer = stage.addChild(new SymbolsContainer());
 		this.spinButton = stage.addChild(new SpinButton());
 		this.spinButton.enabled = false;
+
 	};
 
 	return View;

@@ -1,9 +1,12 @@
-make("AssetsModel", function(loader) {
+make("AssetsModel", function(ClassUtil, Model, loader) {
 	"use strict";
 
 	function AssetsModel() {
+		Model.apply(this, arguments);
 		this.resources = {};
 	}
+
+	ClassUtil.extend(AssetsModel, Model);
 	
 	AssetsModel.prototype.load = function(onComplete) {
 	    loader.load(this.getAssetList(), function() {

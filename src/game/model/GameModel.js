@@ -1,12 +1,15 @@
-make("GameModel", function(stage) {
+make("GameModel", function(ClassUtil, Model, stage) {
 	"use strict";
 
 	function GameModel() {
+		Model.apply(this, arguments);
 		this.stage = stage;
 	}
+	
+	ClassUtil.extend(GameModel, Model);
 
 	GameModel.prototype.getAssetsServerURL = function() {
-	    return "./assets/";
+		return "./assets/";
 	};
 
 	Object.defineProperty(GameModel.prototype, "canvas", {
