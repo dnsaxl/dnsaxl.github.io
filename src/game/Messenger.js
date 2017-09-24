@@ -11,6 +11,10 @@ make("Messenger", function(EventEmitter, ClassUtil) {
 			GAME : {
 				FRAME : "game-frame",
 				RESIZE : "game-resize"
+			},
+			SPIN : {
+				BEGIN : "spin-begin",
+				STOP : "spin-stop"
 			}
 		};
 	}

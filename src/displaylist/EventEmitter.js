@@ -59,6 +59,9 @@ make("EventEmitter", function() {
 
 	EventEmitter.prototype.emit = function(eventName) {
 		var handlers = this.handlers[eventName];
+		if (eventName !== "game-frame") {
+			console.log(eventName, !!handlers);
+		}
 		if (!handlers) {
 			return;
 		}

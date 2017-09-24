@@ -53,7 +53,7 @@ make("Interaction", function(ClassUtil) {
 	};
 
 	Interaction.prototype.emitIfCan = function(target, e, forceType, realTarget) {
-		if (target && target.hasListener(forceType || e.type)) {
+		if (target && target.interactive &&  target.hasListener(forceType || e.type)) {
 			target.emit(forceType || e.type, e, realTarget);
 		}
 	};
@@ -68,6 +68,7 @@ make("Interaction", function(ClassUtil) {
 		while (this.HANDLERS[type].length) {
 			var handler = this.HANDLERS[type].pop();
 			handler.emit(e.type, e, handler === target);
+			this.emitIfCan(target, e, null, handler === target);
 		}
 	};
 

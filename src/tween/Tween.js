@@ -1,4 +1,4 @@
-make("Tween", function() {
+make("Tween", function(Ease) {
 	"use strict";
 
 	function Tween(target, time, props) {
@@ -29,7 +29,7 @@ make("Tween", function() {
 		this.onUpdate = props.onUpdate;
 		this.delay = props.delay;
 		this.repeat = props.repeat;
-		this.ease = props.ease || Tween.easings.easeOutQuad;
+		this.ease = Ease[props.ease] || props.ease || Ease.outQuad;
 		this.startValues = {};
 		this.endValues = {};
 		this.diffValues = {};
@@ -82,7 +82,6 @@ make("Tween", function() {
 
 	Tween.finish = function(tween) {
 		for (var p in tween.endValues) {
-			console.log("tw", p, tween.endValues[p]);
 			tween.target[p] = tween.endValues[p];
 		}
 		if (tween.onUpdate) {
@@ -94,16 +93,10 @@ make("Tween", function() {
 		tween.destroy();
 	};
 
-	Tween.easings = {
-		easeOutQuad: function(t, b, c, d) {
-			return -c * (t /= d) * (t - 2) + b;
-		}
-	};
-	
 	Tween.prototype.killByTarget = function(target) {
 		for (var j = Tween.tweens.length; j--;) {
 			var tween = Tween.tweens[j];
-			if(tween.t === target){
+			if (tween.t === target) {
 				Tween.tweens.splice(j, 1);
 				tween.destroy();
 			}

@@ -14,7 +14,12 @@ make("SymbolsContainer", function(Container, ClassUtil, assetsModel, reelModel, 
 		for (var i = 0, j = symbols.length; i < j; i++) {
 			this.addChild(PooledSprite.fromPool(symbols[i].path, 0.5, 0.5, 1, reelId * reelModel.REEL_GAP, i * reelModel.SYMBOLS_GAP));
 		}
-		console.log(this.children);
+	};
+
+	SymbolsContainer.prototype.movement = function(delta) {
+		this.children.map(function(child) {
+			child.y += delta;
+		})
 	};
 
 	return SymbolsContainer;

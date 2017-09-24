@@ -21,6 +21,11 @@ make("layoutController", function(LayoutController) {
 	return new LayoutController();
 });
 
+
+make("reelController", function(ReelController) {
+	return new ReelController();
+});
+
 make("loader", function(Loader, gameModel) {
 	return new Loader(gameModel.getAssetsServerURL());
 });
