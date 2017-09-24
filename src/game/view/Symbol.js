@@ -1,4 +1,4 @@
-make("Symbol", function(Container, ClassUtil) {
+make("Symbol", function(Container, ClassUtil, Sprite) {
 	"use strict";
 
 	function Symbol() {
@@ -12,16 +12,21 @@ make("Symbol", function(Container, ClassUtil) {
 			return this._type;
 		},
 		set: function(value) {
-			if (_type !== value) {
-				this.onTypeChange(value);
+			if (this._type !== value) {
+				this._type = value;
+				this.onTypeChange();
 			}
-			this._type = value;
-
 		}
 	});
-	
+
 	Symbol.prototype.onTypeChange = function() {
-	    
+		var url = "images/" + this.type + ".png";
+		if (!this.image) {
+			this.image = this.addChild(new Sprite(url));
+		}
+		else {
+			this.image.setFrame(url);
+		}
 	};
 
 	return Symbol;

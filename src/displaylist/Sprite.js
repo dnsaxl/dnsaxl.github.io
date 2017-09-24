@@ -3,19 +3,23 @@ make("Sprite", function(DisplayObject, ClassUtil, assetsModel) {
 
 	function Sprite(source) {
 		DisplayObject.apply(this, arguments);
-		this.image = this.setImage(source);
+		this.setFrame(source);
 		this.origWidth = this.image.width;
 		this.origHeight = this.image.height;
 	}
 
 	ClassUtil.extend(Sprite, DisplayObject);
 
-	Sprite.prototype.setImage = function(source) {
+	Sprite.prototype.setFrame = function(source) {
 		this.resource = assetsModel.resources[source];
 		if (!this.resource || !this.resource.data) {
 			throw Error("Wrong sprite source", source);
 		}
-		return this.resource.data;
+		else {
+			this.origWidth = this.resource.data.width;
+			this.origHeight = this.resource.data.height;
+		}
+		this.image = this.resource.data;
 	};
 
 	Sprite.prototype.render = function(renderer) {

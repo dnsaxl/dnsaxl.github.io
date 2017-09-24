@@ -44,6 +44,7 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 		for (var i = 0, j = this.children.length; i < j; ++i) {
 			this.children[i].update(this.world);
 		}
+		this.updateBounds();
 	};
 
 	Container.prototype.updateBounds = function() {

@@ -12,7 +12,6 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 		this.parent = null;
 		this.interactive = false;
 		this.visible = true;
-		console.log(this);
 	}
 
 	ClassUtil.extend(DisplayObject, EventEmitter);
@@ -47,6 +46,7 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 		var w = this.world;
 		w.x = world.x + (this.x - this.anchorX * this.width) * this.parent.scaleX;
 		w.y = world.y + (this.y - this.anchorY * this.height) * this.parent.scaleY;
+
 		w.sx = world.sx * this.scaleX;
 		w.sy = world.sy * this.scaleY;
 		w.w = w.sx * this.origWidth;

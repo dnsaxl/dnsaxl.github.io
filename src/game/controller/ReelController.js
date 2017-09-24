@@ -12,7 +12,7 @@ make("ReelController", function(ClassUtil, msg, Tween, view, reelModel) {
 		this.lastValues = [0];
 		this.tween.y = 0;
 		Tween.to(this.tween, reelModel.accelerationDuration, {
-			y: reelModel.accelerationSpeed,
+			y: reelModel.accelerationDistance,
 			ease : "inBack",
 			onUpdate: this.passDeltaToSymbols,
 			onComplete: this.onAccelerateTweenComplete
@@ -39,11 +39,10 @@ make("ReelController", function(ClassUtil, msg, Tween, view, reelModel) {
 	};
 
 	ReelController.prototype.onMaintainTweenComplete = function() {
-		console.log("maintain complete");
 		this.tween.y = 0;
 		this.lastValues = [0];
 		Tween.to(this.tween, reelModel.accelerationDuration, {
-			y: reelModel.accelerationSpeed,
+			y: reelModel.accelerationDistance,
 			ease : "outBack",
 			onUpdate: this.passDeltaToSymbols,
 			onComplete: this.onDecelerateTweenComplete
