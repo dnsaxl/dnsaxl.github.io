@@ -99,6 +99,16 @@ make("Tween", function() {
 			return -c * (t /= d) * (t - 2) + b;
 		}
 	};
+	
+	Tween.prototype.killByTarget = function(target) {
+		for (var j = Tween.tweens.length; j--;) {
+			var tween = Tween.tweens[j];
+			if(tween.t === target){
+				Tween.tweens.splice(j, 1);
+				tween.destroy();
+			}
+		}
+	};
 
 	return Tween;
 });

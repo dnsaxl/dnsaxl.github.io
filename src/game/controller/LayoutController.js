@@ -16,6 +16,11 @@ make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel) 
 		view.spinButton.x = view.background.x + view.background.width * 0.41;
 		view.spinButton.y = view.background.y;
 
+		view.symbolsContainer.scaleX = view.background.scaleX;
+		view.symbolsContainer.scaleY = view.background.scaleY;
+		view.symbolsContainer.x = view.background.x;
+		view.symbolsContainer.y = view.background.y;
+
 	};
 
 	LayoutController.prototype.scale = function(target, mode) {

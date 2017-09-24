@@ -9,7 +9,6 @@ make("View", function(stage, GameBackground, SpinButton, SymbolsContainer) {
 		this.background = stage.addChild(new GameBackground());
 		this.symbolsContainer = stage.addChild(new SymbolsContainer());
 		this.spinButton = stage.addChild(new SpinButton());
-		this.spinButton.enabled = false;
 
 	};
 

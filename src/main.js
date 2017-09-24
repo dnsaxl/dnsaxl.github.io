@@ -12,6 +12,11 @@ make("layoutModel", function(LayoutModel) {
 	return new LayoutModel();
 });
 
+make("reelModel", function(ReelModel) {
+	return new ReelModel();
+});
+
+
 make("layoutController", function(LayoutController) {
 	return new LayoutController();
 });

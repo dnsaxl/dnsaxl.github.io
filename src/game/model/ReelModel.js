@@ -3,6 +3,8 @@ make("ReelModel", function(ClassUtil, Model) {
 
 	function ReelModel() {
 		Model.apply(this, arguments);
+		this.SYMBOLS_GAP = 155;
+		this.REEL_GAP = 200;
 	}
 
 	ClassUtil.extend(ReelModel, Model);

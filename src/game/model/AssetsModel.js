@@ -22,5 +22,15 @@ make("AssetsModel", function(ClassUtil, Model, loader) {
 		];
 	};
 
+	AssetsModel.prototype.getMatching = function(regexp) {
+		var all = [];
+	    for(var name in this.resources){
+		    if(name.match(regexp)){
+			    all.push(this.resources[name]);
+		    }
+	    }
+		return all;
+	};
+
 	return AssetsModel;
 });

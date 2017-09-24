@@ -1,18 +1,22 @@
-make("Sprite", function(DisplayObject, ClassUtil, assetsModel, MathUtil) {
+make("Sprite", function(DisplayObject, ClassUtil, assetsModel) {
 	"use strict";
 
 	function Sprite(source) {
 		DisplayObject.apply(this, arguments);
-		this.resource = assetsModel.resources[source];
-		if (!this.resource || !this.resource.data) {
-			throw Error("Wrong sprite source", source);
-		}
-		this.image = this.resource.data;
+		this.image = this.setImage(source);
 		this.origWidth = this.image.width;
 		this.origHeight = this.image.height;
 	}
 
 	ClassUtil.extend(Sprite, DisplayObject);
+
+	Sprite.prototype.setImage = function(source) {
+		this.resource = assetsModel.resources[source];
+		if (!this.resource || !this.resource.data) {
+			throw Error("Wrong sprite source", source);
+		}
+		return this.resource.data;
+	};
 
 	Sprite.prototype.render = function(renderer) {
 		DisplayObject.prototype.render.apply(this, arguments);
