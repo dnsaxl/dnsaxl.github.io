@@ -41,8 +41,6 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 
 	Container.prototype.update = function(world) {
 		DisplayObject.prototype.update.apply(this, arguments);
-		this.world.x = world.x + (this.x - this.anchorX * this.width);
-		this.world.y = world.y + (this.y - this.anchorY * this.width);
 		for (var i = 0, j = this.children.length; i < j; ++i) {
 			this.children[i].update(this.world);
 		}
