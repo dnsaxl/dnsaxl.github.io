@@ -7,6 +7,14 @@ make("Ease", function() {
 		},
 		inQuad: function(t, b, c, d) {
 			return c * (t /= d) * t + b;
+		},
+		inBack: function(t, b, c, d, s) {
+			if (s == undefined) s = 1.70158;
+			return c * (t /= d) * t * ((s + 1) * t - s) + b;
+		},
+		outBack: function(t, b, c, d, s) {
+			if (s == undefined) s = 1.70158;
+			return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
 		}
 	};
 

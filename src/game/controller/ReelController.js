@@ -1,4 +1,4 @@
-make("ReelController", function(ClassUtil, msg, Tween, view) {
+make("ReelController", function(ClassUtil, msg, Tween, view, reelModel) {
 	"use strict";
 
 	function ReelController() {
@@ -10,26 +10,56 @@ make("ReelController", function(ClassUtil, msg, Tween, view) {
 
 	ReelController.prototype.onSpinBegin = function() {
 		this.lastValues = [0];
-		Tween.to(this.tween, 1, {
-			y: 100,
-			ease : "inQuad",
-			onUpdate: this.onAccelerateTweenUpdate,
+		this.tween.y = 0;
+		Tween.to(this.tween, reelModel.accelerationDuration, {
+			y: reelModel.accelerationSpeed,
+			ease : "inBack",
+			onUpdate: this.passDeltaToSymbols,
 			onComplete: this.onAccelerateTweenComplete
 		});
 	};
 
-	ReelController.prototype.onAccelerateTweenUpdate = function() {
-		var l = this.lastValues.length;
-		var delta = this.tween.y - this.lastValues[l - 1];
+	ReelController.prototype.onAccelerateTweenComplete = function() {
+		this.lastValues.pop(); // onUpdate is called along with onComplete too
+		this.speed = this.lastValues.pop() - this.lastValues.pop();
+		this.maintainSpinSpeed(reelModel.MIN_SPINNING_TIME);
+	};
+
+	ReelController.prototype.maintainSpinSpeed = function(duration) {
+		this.tween.y = 0;
+		Tween.to(this.tween, duration, {
+			y: 100,
+			onUpdate: this.onMaintainTweenUpdate,
+			onComplete: this.onMaintainTweenComplete
+		});
+	};
+
+	ReelController.prototype.onMaintainTweenUpdate = function() {
+		view.symbolsContainer.movement(this.speed);
+	};
+
+	ReelController.prototype.onMaintainTweenComplete = function() {
+		console.log("maintain complete");
+		this.tween.y = 0;
+		this.lastValues = [0];
+		Tween.to(this.tween, reelModel.accelerationDuration, {
+			y: reelModel.accelerationSpeed,
+			ease : "outBack",
+			onUpdate: this.passDeltaToSymbols,
+			onComplete: this.onDecelerateTweenComplete
+		});
+	};
+
+	ReelController.prototype.onDecelerateTweenComplete = function() {
+	    msg.emit(msg.EVENTS.SPIN.STOP);
+	};
+
+	ReelController.prototype.passDeltaToSymbols = function() {
+		var delta = this.tween.y - this.lastValues[this.lastValues.length - 1];
 		this.lastValues.push(this.tween.y);
 		view.symbolsContainer.movement(delta);
 	};
 
-	ReelController.prototype.onAccelerateTweenComplete = function() {
-		this.lastValues.pop(); // onUpdate is called along with onComplete too
-		var speed = this.lastValues.pop() - this.lastValues.pop();
-	    console.log("accelerate complete", speed);
-	};
 
 	return ReelController;
 });
