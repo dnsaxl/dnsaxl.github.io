@@ -41,7 +41,8 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 
 	Container.prototype.update = function(world) {
 		DisplayObject.prototype.update.apply(this, arguments);
-		this.updateBounds();
+		this.world.x = world.x + (this.x - this.anchorX * this.width);
+		this.world.y = world.y + (this.y - this.anchorY * this.width);
 		for (var i = 0, j = this.children.length; i < j; ++i) {
 			this.children[i].update(this.world);
 		}
@@ -51,15 +52,12 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 		var minx = 0, maxx = 0, miny = 0, maxy = 0;
 		for (var i = 0, j = this.children.length; i < j; ++i) {
 			var c = this.children[i];
-			var rw = c.width;//c.origWidth * c.world.sx;
-			var rh = c.height;//c.origHeight * c.world.sy;
-
-			var rx = c.x - c.anchorX * rw;
-			var ry = c.y - c.anchorY * rh;
+			var rx = c.x - c.anchorX * c.width;
+			var ry = c.y - c.anchorY * c.height;
 			minx = Math.min(rx, minx);
 			miny = Math.min(ry, miny);
-			maxx = Math.max(rx + rw, maxx);
-			maxy = Math.max(ry + rh, maxy);
+			maxx = Math.max(rx + c.width, maxx);
+			maxy = Math.max(ry + c.height, maxy);
 		}
 		this.origWidth = (maxx - minx);
 		this.origHeight = (maxy - miny);

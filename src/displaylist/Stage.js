@@ -6,6 +6,7 @@ make("Stage", function(ClassUtil, Container, Tween, Interaction) {
 		this.canvas = this.createCanvas();
 		this.context = this.canvas.getContext("2d");
 		this.interaction = new Interaction(this);
+		this.parent = {scaleX : 1, scaleY : 1, x : 0, y : 0};
 		this.FPS = 40;
 		this.tick();
 	}

@@ -10,6 +10,8 @@ make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel) 
 
 		this.scale(view.background, layoutModel.background.scale);
 		this.align(view.background, layoutModel.background.horizontal, layoutModel.background.vertical);
+		// view.background.setScale(0.5);
+		// view.background.x = view.background.y = 200;
 
 		view.spinButton.scaleX = view.background.scaleX;
 		view.spinButton.scaleY = view.background.scaleY;
