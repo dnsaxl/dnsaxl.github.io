@@ -1,16 +1,18 @@
 make("Button", function(Container, ClassUtil, Sprite) {
 	"use strict";
 
-	function Button(idle, down) {
+	function Button(idle, down, over) {
 		Container.apply(this, arguments);
 		this.interactive = true;
-		if (idle.constructor === String) {
+		if (idle && idle.constructor === String) {
 			this.idle = this.addChild(new Sprite(idle));
 		}
-		if (down.constructor === String) {
+		if (down && down.constructor === String) {
 			this.down = this.addChild(new Sprite(down));
 		}
-		console.log(idle.constructor === String, down.constructor === String, this);
+		if (over && over.constructor === String) {
+			this.over = this.addChild(new Sprite(over));
+		}
 		this.on("mousedown,touchstart", this.onDown);
 		this.on("mouseup,touchend,touchcancel", this.onUp);
 		this.down.visible = false;
@@ -18,49 +20,64 @@ make("Button", function(Container, ClassUtil, Sprite) {
 
 	ClassUtil.extend(Button, Container);
 
-	Button.prototype.onDown = function() {
-		this.idle.visible = false;
-		this.down.visible = true;
-	};
-
-	Button.prototype.onUp = function() {
-		this.idle.visible = true;
-		this.down.visible = false;
-	};
-
-	// Object.defineProperty(Button.prototype, "anchorX", {
-	// 	get: function() {
-	// 		return this._anchorX;
-	// 	},
-	// 	set: function(value) {
-	// 		this._anchorX = value;
-	// 		this.updateAnchors();
-	// 	}
-	// });
-	//
-	// Object.defineProperty(Button.prototype, "anchorY", {
-	// 	get: function() {
-	// 		return this._anchorY;
-	// 	},
-	// 	set: function(value) {
-	// 		this._anchorY = value;
-	// 		this.updateAnchors();
-	// 	}
-	// });
-
-	Button.prototype.setAnchor = function(value) {
-		//this._anchorX = this._anchorY = value;
-		this.updateAnchors(value, value);
-	};
-
-	Button.prototype.updateAnchors = function(ax, ay) {
+	Button.prototype.onDown = function(event, trueTarget) {
 		if (this.idle) {
-			this.idle.anchorX = ax;
-			this.idle.anchorY = ay;
+			this.idle.visible = false;
+		}
+		if (this.over) {
+			this.over.visible = false;
 		}
 		if (this.down) {
-			this.down.anchorX = ax;
-			this.down.anchorY = ay;
+			this.down.visible = true;
+		}
+	};
+
+	Button.prototype.onUp = function(event, trueTarget) {
+		if (this.idle) {
+			this.idle.visible = !trueTarget || !this.over;
+		}
+		if (this.over) {
+			this.over.visible = trueTarget;
+		}
+		if (this.down) {
+			this.down.visible = false;
+		}
+	};
+
+	Object.defineProperty(Button.prototype, "enabled", {
+		get: function() {
+			return this._enabled;
+		},
+		set: function(value) {
+			if (value) {
+				this.onEnable();
+			}
+			else {
+				this.onDisable();
+			}
+			this._enabled = value;
+		}
+	});
+
+	Button.prototype.onEnable = function() {
+		this.resetState();
+		this.interactive = true;
+	};
+
+	Button.prototype.onDisable = function() {
+		this.resetState();
+		this.interactive = false;
+	};
+
+	Button.prototype.resetState = function() {
+		if (this.idle) {
+			this.idle.visible = true;
+		}
+		if (this.over) {
+			this.over.visible = false;
+		}
+		if (this.down) {
+			this.down.visible = false;
 		}
 	};
 

@@ -7,7 +7,6 @@ make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel) 
 	}
 
 	LayoutController.prototype.onResize = function(w, h) {
-		console.log("RESIZE", view.background);
 
 		this.scale(view.background, layoutModel.background.scale);
 		this.align(view.background, layoutModel.background.horizontal, layoutModel.background.vertical);
