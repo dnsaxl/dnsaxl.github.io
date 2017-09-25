@@ -26,7 +26,9 @@ make("Tween", function(Ease) {
 
 	Tween.prototype.parseProperties = function(props) {
 		this.onComplete = props.onComplete;
+		this.onCompleteParams = props.onCompleteParams;
 		this.onUpdate = props.onUpdate;
+		this.onUpdateParams = props.onUpdateParams;
 		this.delay = props.delay;
 		this.repeat = props.repeat;
 		this.ease = Ease[props.ease] || props.ease || Ease.outQuad;
@@ -73,7 +75,7 @@ make("Tween", function(Ease) {
 					tween.update(property);
 				}
 				if (tween.onUpdate) {
-					tween.onUpdate(tween.timePassed / tween.duration);
+					tween.onUpdate.apply(null, tween.onUpdateParams);
 				}
 			}
 		}
@@ -85,10 +87,10 @@ make("Tween", function(Ease) {
 			tween.target[p] = tween.endValues[p];
 		}
 		if (tween.onUpdate) {
-			tween.onUpdate(1);
+			tween.onUpdate.apply(null, tween.onUpdateParams);
 		}
 		if (tween.onComplete) {
-			tween.onComplete();
+			tween.onComplete.apply(null, tween.onCompleteParams);
 		}
 		tween.destroy();
 	};

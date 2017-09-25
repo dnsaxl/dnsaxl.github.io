@@ -18,7 +18,7 @@ make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel) 
 
 		view.symbolsContainer.scaleX = view.background.scaleX;
 		view.symbolsContainer.scaleY = view.background.scaleY;
-		view.symbolsContainer.x = view.background.x;
+		view.symbolsContainer.x = view.background.x + view.background.width * -0.055;
 		view.symbolsContainer.y = view.background.y;
 
 	};
