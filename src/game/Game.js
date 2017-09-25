@@ -1,4 +1,4 @@
-make("Game", function(ClassUtil, assetsModel, view, msg) {
+make("Game", function(ClassUtil, assetsModel, view, msg, reelModel) {
 	"use strict";
 
 	function Game() {
@@ -7,6 +7,7 @@ make("Game", function(ClassUtil, assetsModel, view, msg) {
 	}
 
 	Game.prototype.onAssetsLoaded = function() {
+		reelModel.init();
 	    view.init();
 		setTimeout(function() {
 

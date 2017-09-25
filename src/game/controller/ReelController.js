@@ -1,4 +1,4 @@
-make("ReelController", function(ClassUtil, msg, Tween, view, reelModel) {
+make("ReelController", function(ClassUtil, msg, Tween, reelModel) {
 	"use strict";
 
 	function ReelController() {
@@ -23,6 +23,7 @@ make("ReelController", function(ClassUtil, msg, Tween, view, reelModel) {
 		this.lastValues.pop(); // onUpdate is called along with onComplete too
 		this.speed = this.lastValues.pop() - this.lastValues.pop();
 		this.maintainSpinSpeed(reelModel.MIN_SPINNING_TIME);
+		reelModel.log(0);
 	};
 
 	ReelController.prototype.maintainSpinSpeed = function(duration) {
@@ -35,14 +36,16 @@ make("ReelController", function(ClassUtil, msg, Tween, view, reelModel) {
 	};
 
 	ReelController.prototype.onMaintainTweenUpdate = function() {
-		view.symbolsContainer.movement(this.speed);
+		reelModel.movement(this.speed, 0);
 	};
 
 	ReelController.prototype.onMaintainTweenComplete = function() {
 		this.tween.y = 0;
 		this.lastValues = [0];
-		Tween.to(this.tween, reelModel.accelerationDuration, {
-			y: reelModel.accelerationDistance,
+		reelModel.findDecelerationDistance(0);
+		console.log(reelModel.deccelerationDuration, reelModel.deccelerationDistance);
+		Tween.to(this.tween, reelModel.deccelerationDuration, {
+			y: reelModel.deccelerationDistance,
 			ease : "outBack",
 			onUpdate: this.passDeltaToSymbols,
 			onComplete: this.onDecelerateTweenComplete
@@ -50,13 +53,15 @@ make("ReelController", function(ClassUtil, msg, Tween, view, reelModel) {
 	};
 
 	ReelController.prototype.onDecelerateTweenComplete = function() {
+		reelModel.log(0);
 	    msg.emit(msg.EVENTS.SPIN.STOP);
 	};
+
 
 	ReelController.prototype.passDeltaToSymbols = function() {
 		var delta = this.tween.y - this.lastValues[this.lastValues.length - 1];
 		this.lastValues.push(this.tween.y);
-		view.symbolsContainer.movement(delta);
+		reelModel.movement(delta, 0);
 	};
 
 

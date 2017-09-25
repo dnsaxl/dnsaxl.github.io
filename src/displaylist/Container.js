@@ -60,7 +60,6 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 		}
 		this.origWidth = (maxx - minx);
 		this.origHeight = (maxy - miny);
-
 	};
 
 	Container.prototype.render = function(renderer) {
