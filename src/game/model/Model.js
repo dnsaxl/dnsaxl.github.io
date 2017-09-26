@@ -16,7 +16,6 @@ make("Model", function(ClassUtil, EventEmitter) {
 			},
 			set: function(value) {
 				if (_value !== value) {
-					var prev = _value;
 					_value = value;
 					this.emit(property + "-changed", value);
 				}

@@ -95,7 +95,7 @@ make("Tween", function(Ease) {
 		tween.destroy();
 	};
 
-	Tween.prototype.killByTarget = function(target) {
+	Tween.killByTarget = function(target) {
 		for (var j = Tween.tweens.length; j--;) {
 			var tween = Tween.tweens[j];
 			if (tween.t === target) {
