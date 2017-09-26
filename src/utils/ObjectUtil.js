@@ -9,22 +9,6 @@ make("ObjectUtil", function() {
 		}
 	};
 
-	ObjectUtil.mixinOnlyNew = function(to, from) {
-		for (var property in from) {
-			if (!to.hasOwnProperty(i)) {
-				to[property] = from[property];
-			}
-		}
-	};
-
-	ObjectUtil.mixinOnlyExisting = function(to, from) {
-		for (var property in from) {
-			if (to.hasOwnProperty(i)) {
-				to[property] = from[property];
-			}
-		}
-	};
-
 	ObjectUtil.mixinSpecific = function(to, from, properties) {
 		properties.map(function(property) {
 			to[property] = from[property];

@@ -30,6 +30,7 @@ make("Sprite", function(DisplayObject, ClassUtil, assetsModel) {
 		var w = this.world;
 		renderer.save();
 		renderer.globalAlpha = w.alpha;
+		renderer.globalCompositeOperation = this.blendMode;
 		renderer.drawImage(this.image, w.x, w.y, w.w, w.h);
 		renderer.restore();
 	};

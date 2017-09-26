@@ -66,6 +66,7 @@ make("Text", function(DisplayObject, ClassUtil, stage) {
 	Text.prototype.render = function(renderer) {
 		renderer.save();
 		this.prepare(renderer);
+		renderer.globalCompositeOperation = this.blendMode;
 		for (var i = 0, j = this._lines.length; i < j; i++) {
 			renderer.fillText(this._lines[i],
 				this.world.x + this._lineWidths[i] * this.world.sx,

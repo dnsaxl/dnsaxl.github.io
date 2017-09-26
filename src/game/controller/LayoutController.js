@@ -1,4 +1,4 @@
-make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel) {
+make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel, ObjectUtil) {
 	"use strict";
 
 	function LayoutController() {
@@ -18,19 +18,23 @@ make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel) 
 			this.align(view.background, layoutModel.background.horizontal, layoutModel.background.vertical);
 
 			if (view.spinButton) {
-				view.spinButton.scaleX = view.background.scaleX;
-				view.spinButton.scaleY = view.background.scaleY;
-				view.spinButton.x = view.background.x + view.background.width * 0.41;
-				view.spinButton.y = view.background.y;
+				this.copyLayout(view.spinButton, view.background);
+				view.spinButton.x += view.background.width * 0.41;
 			}
 
 			if (view.symbolsContainer) {
-				view.symbolsContainer.scaleX = view.background.scaleX;
-				view.symbolsContainer.scaleY = view.background.scaleY;
-				view.symbolsContainer.x = view.background.x + view.background.width * -0.055;
-				view.symbolsContainer.y = view.background.y;
+				this.copyLayout(view.symbolsContainer, view.background);
+				view.symbolsContainer.x -= view.background.width * 0.055;
+			}
+
+			if (view.globalMask) {
+				this.copyLayout(view.globalMask, view.background);
 			}
 		}
+	};
+
+	LayoutController.prototype.copyLayout = function(to, from) {
+		ObjectUtil.mixinSpecific(to, from, ["x", "y", "scaleX", "scaleY"]);
 	};
 
 	LayoutController.prototype.scale = function(target, mode) {

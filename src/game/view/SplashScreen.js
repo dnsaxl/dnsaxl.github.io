@@ -1,21 +1,29 @@
-make("SplashScreen", function(Container, ClassUtil, Text, assetsModel, Graphics) {
+make("SplashScreen", function(Container, ClassUtil, Text, assetsModel, Graphics, Tween) {
 	"use strict";
 
 	function SplashScreen() {
 		Container.apply(this, arguments);
 
-		var g = new Graphics();
-		g.beginFill("black");
-		g.drawRect(960 / -2, 535 / -2, 960, 535);
-		this.addChild(g);
+		this.background = this.createBackground();
+		this.label = this.createLabel();
 
-		this.text = new Text("Loading", this.getTextStyle());
-		this.text.setAnchor(0.5);
-		this.addChild(this.text);
 		assetsModel.on("progress-changed", this.onAssetsProgress);
 	}
 
 	ClassUtil.extend(SplashScreen, Container);
+
+	SplashScreen.prototype.createBackground = function() {
+		var bg = new Graphics();
+		bg.beginFill("black");
+		bg.drawRect(960 / -2, 535 / -2, 960, 535);
+		return this.addChild(bg);
+	};
+
+	SplashScreen.prototype.createLabel = function() {
+		var text = new Text("Loading", this.getTextStyle());
+		text.setAnchor(0.5);
+		return this.addChild(text);
+	};
 
 	SplashScreen.prototype.getTextStyle = function() {
 		return {
@@ -26,7 +34,20 @@ make("SplashScreen", function(Container, ClassUtil, Text, assetsModel, Graphics)
 	};
 
 	SplashScreen.prototype.onAssetsProgress = function(value) {
-		this.text.text = "Loading\n" + String(Math.round(value * 100)) + "%";
+		this.label.text = "Loading\n" + String(Math.round(value * 100)) + "%";
+	};
+
+	SplashScreen.prototype.show = function() {
+		this.alpha = 1;
+	};
+
+	SplashScreen.prototype.hide = function() {
+		Tween.killByTarget(this);
+		Tween.to(this, 1.6, {alpha: 0, onComplete: this.onFadedOut});
+	};
+
+	SplashScreen.prototype.onFadedOut = function() {
+		this.parent.removeChild(this.splashScreen);
 	};
 
 	return SplashScreen;

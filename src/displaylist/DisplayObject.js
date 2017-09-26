@@ -12,6 +12,7 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 		this.parent = null;
 		this.interactive = false;
 		this.visible = true;
+		this.blendMode = "source-over";
 	}
 
 	ClassUtil.extend(DisplayObject, EventEmitter);
@@ -21,7 +22,7 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 			return this.scaleX * this.origWidth;
 		},
 		set: function(value) {
-			if(this.origWidth === 0) return;
+			if (this.origWidth === 0) return;
 			this.scaleX = value / this.origWidth;
 		}
 	});
@@ -31,7 +32,7 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 			return this.scaleY * this.origHeight;
 		},
 		set: function(value) {
-			if(this.origHeight === 0) return;
+			if (this.origHeight === 0) return;
 			this.scaleY = value / this.origHeight;
 		}
 	});

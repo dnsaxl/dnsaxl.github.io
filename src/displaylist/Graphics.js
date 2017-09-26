@@ -38,6 +38,7 @@ make("Graphics", function(DisplayObject, ClassUtil) {
 	Graphics.prototype.render = function(renderer) {
 		renderer.save();
 		renderer.globalAlpha = this.world.alpha;
+		renderer.globalCompositeOperation = this.blendMode;
 		var cl = this._commandsList;
 		for (var i = 0, j = cl.length; i < j; i++) {
 			var c = cl[i];
@@ -52,6 +53,11 @@ make("Graphics", function(DisplayObject, ClassUtil) {
 			}
 		}
 		renderer.restore();
+	};
+
+	Graphics.prototype.clear = function() {
+		this._commandsList = null;
+		this.minX = this.minY = this.maxX = this.maxY = 0;
 	};
 
 	Graphics.prototype.getFullCoords = function(x, y, w, h) {
