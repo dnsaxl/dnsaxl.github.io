@@ -21,6 +21,7 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 			return this.scaleX * this.origWidth;
 		},
 		set: function(value) {
+			this.origWidth = this.origWidth || value;
 			this.scaleX = value / this.origWidth;
 		}
 	});
@@ -30,6 +31,7 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 			return this.scaleY * this.origHeight;
 		},
 		set: function(value) {
+			this.origHeight = this.origHeight || value;
 			this.scaleY = value / this.origHeight;
 		}
 	});
@@ -46,7 +48,6 @@ make("DisplayObject", function(ClassUtil, EventEmitter, MathUtil) {
 		var w = this.world;
 		w.x = world.x + (this.x - this.anchorX * this.width) * this.parent.scaleX;
 		w.y = world.y + (this.y - this.anchorY * this.height) * this.parent.scaleY;
-
 		w.sx = world.sx * this.scaleX;
 		w.sy = world.sy * this.scaleY;
 		w.w = w.sx * this.origWidth;

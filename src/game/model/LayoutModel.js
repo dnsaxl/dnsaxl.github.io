@@ -16,6 +16,12 @@ make("LayoutModel", function(ClassUtil, Model, gameModel) {
 			BOTTOM: 5
 		};
 
+		this.splashScreen = {
+			scale: this.SCALE.TO_FIT,
+			horizontal: this.ALIGN.CENTER,
+			vertical: this.ALIGN.CENTER
+		};
+
 		this.background = {
 			scale: this.SCALE.TO_FIT,
 			horizontal: this.ALIGN.CENTER,
@@ -57,8 +63,8 @@ make("LayoutModel", function(ClassUtil, Model, gameModel) {
 	LayoutModel.prototype.scaleTo = function(target, w, h, fill) {
 		w = w || gameModel.canvas.width;
 		h = h || gameModel.canvas.height;
-		var tr = target.origWidth / target.origHeight;
-		var rw = w / h < tr;
+		var tr = target.origWidth / target.origHeight || 1;
+		var rw = w / h || 1 < tr;
 		if ((fill && rw) || !fill && !rw) {
 			target.height = h;
 			target.width = h * tr;
