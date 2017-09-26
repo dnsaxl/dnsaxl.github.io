@@ -3,8 +3,9 @@ make("Interaction", function(ClassUtil) {
 
 	function Interaction(stage) {
 		ClassUtil.bindAll(this);
-		this.stage = stage
+		this.stage = stage;
 		this.ctOver = null;
+		this.lastMouseDown = null;
 		this.HANDLERS = {
 			touchstart: [],
 			touchend: [],
@@ -26,6 +27,7 @@ make("Interaction", function(ClassUtil) {
 		switch (e.type) {
 			case "mousedown" :
 			case "touchstart" :
+				this.lastMouseDown = target;
 				if (target) {
 					this.pushToSupportPool(e.type, target);
 					target.emit(e.type, e, true);
@@ -47,13 +49,18 @@ make("Interaction", function(ClassUtil) {
 				this.emitIfCan(target, e, null, true);
 				this.ctOver = target;
 				break;
+			case "click":
+				if (target === this.lastMouseDown) {
+					this.emitIfCan(target, e, null, true);
+				}
+				break;
 			default:
 				this.emitIfCan(target, e, null, true);
 		}
 	};
 
 	Interaction.prototype.emitIfCan = function(target, e, forceType, realTarget) {
-		if (target && target.interactive &&  target.hasListener(forceType || e.type)) {
+		if (target && target.interactive && target.hasListener(forceType || e.type)) {
 			target.emit(forceType || e.type, e, realTarget);
 		}
 	};
