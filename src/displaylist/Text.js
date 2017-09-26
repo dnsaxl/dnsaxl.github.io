@@ -1,4 +1,4 @@
-make("Text", function(DisplayObject, ClassUtil) {
+make("Text", function(DisplayObject, ClassUtil, stage) {
 	"use strict";
 
 	function Text(text, style) {
@@ -7,7 +7,6 @@ make("Text", function(DisplayObject, ClassUtil) {
 		this._lines = [];
 		this._spacing = 0;
 		this._lineHeight = 0;
-		this._dirty = false;
 		this.style = style || this.getDefaultStyle();
 		this.text = text || "";
 	}
@@ -31,6 +30,7 @@ make("Text", function(DisplayObject, ClassUtil) {
 		set: function(value) {
 			this._text = String(value);
 			this.parseText();
+			this.measure();
 		}
 	});
 
@@ -41,6 +41,7 @@ make("Text", function(DisplayObject, ClassUtil) {
 		set: function(value) {
 			this._style = value;
 			this.parseStyle();
+			this.measure();
 		}
 	});
 
@@ -48,39 +49,44 @@ make("Text", function(DisplayObject, ClassUtil) {
 		this._lines = this.text.split(/\n/);
 		this._numLines = this._lines.length;
 		this._lineHeight = Number(this._style.font.match(/\d+/).pop()) + this._spacing;
-		this._dirty = true;
 	};
 
 	Text.prototype.parseStyle = function() {
 		this._spacing = this.style.lineSpacing || this._spacing;
 		this._lineHeight = Number(this._style.font.match(/\d+/).pop()) + this._spacing;
-		this._dirty = true;
+	};
+
+	Text.prototype.update = function(world) {
+		this.measure();
+		DisplayObject.prototype.update.apply(this, arguments);
+		this.world.x = world.x + (this.x - this.anchorX * this.width) * this.scaleX;
+		this.world.y = world.y + (this.y - this.anchorY * this.height) * this.scaleY;
 	};
 
 	Text.prototype.render = function(renderer) {
 		renderer.save();
-		renderer.textBaseline = "top";
-		renderer.font = this.style.font;
-		renderer.fillStyle = this.style.fill;
-		renderer.scale(this.scaleX, this.scaleY);
-
-		if (this._dirty) {
-			this._lineWidths = this.measure(renderer);
-			this._dirty = false;
-		}
-
-		var bx = (this.world.x - this.anchorX * this.width) / this.scaleX;
-		var by = (this.world.y - this.anchorY * this.height) / this.scaleY;
+		this.prepare(renderer);
 		for (var i = 0, j = this._lines.length; i < j; i++) {
 			renderer.fillText(this._lines[i],
-				bx + this._lineWidths[i],
-				by + this._lineHeight * i
+				this.world.x + this._lineWidths[i],
+				this.world.y + this._lineHeight * i
 			);
 		}
 		renderer.restore();
 	};
 
-	Text.prototype.measure = function(renderer) {
+	Text.prototype.prepare = function(renderer) {
+		renderer.textBaseline = "top";
+		renderer.font = this.style.font;
+		renderer.fillStyle = this.style.fill;
+		renderer.scale(this.scaleX, this.scaleY);
+		renderer.globalAlpha = this.world.alpha;
+	};
+
+	Text.prototype.measure = function() {
+		var renderer = stage.context;
+		renderer.save();
+		this.prepare(renderer);
 		var i, j, widths;
 		var align = Text.ALIGN[this.style.align] || this.getDefaultStyle().align;
 		for (i = 0, j = this._lines.length, widths = []; i < j; i++) {
@@ -92,7 +98,8 @@ make("Text", function(DisplayObject, ClassUtil) {
 		for (i = 0, j = this._lines.length; i < j; i++) {
 			widths[i] = (this.origWidth - widths[i]) * align;
 		}
-		return widths;
+		this._lineWidths = widths;
+		renderer.restore();
 	};
 
 	Text.prototype.getDefaultStyle = function() {
