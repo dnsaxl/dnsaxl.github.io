@@ -35,9 +35,11 @@
     <script type="text/javascript" src="src/game/model/GameModel.js"></script>
     <script type="text/javascript" src="src/game/model/LayoutModel.js"></script>
     <script type="text/javascript" src="src/game/model/ReelModel.js"></script>
+    <script type="text/javascript" src="src/game/model/HTMLMenuModel.js"></script>
 
     <script type="text/javascript" src="src/game/controller/ReelController.js"></script>
     <script type="text/javascript" src="src/game/controller/LayoutController.js"></script>
+    <script type="text/javascript" src="src/game/controller/HTMLMenuController.js"></script>
 
     <script type="text/javascript" src="src/game/view/View.js"></script>
     <script type="text/javascript" src="src/game/view/SplashScreen.js"></script>
@@ -47,11 +49,27 @@
     <script type="text/javascript" src="src/game/view/SymbolsContainer.js"></script>
     <script type="text/javascript" src="src/game/view/Symbol.js"></script>
     <script type="text/javascript" src="src/game/view/GlobalMask.js"></script>
+    <script type="text/javascript" src="src/game/view/HTMLMenu.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="main.css"/>
 
 
 </head>
 <body>
 
+<div id="menu" class="overlay">
+    <div class="content">
+        <div id="top-hint" class="hint">Select winning symbol</div>
+        <select id="dropdown">
+            <option value="SYM1">WILD</option>
+            <option value="SYM3">Strawberry</option>
+            <option value="SYM4">Orange</option>
+            <option value="SYM5">Lemon</option>
+            <option value="SYM6">Watermelon</option>
+            <option value="SYM7">Grape</option>
+        </select>
+        <div id="bottom-hint" class="hint">press the spin button</div>
+    </div>
+</div>
 </body>
 </html>

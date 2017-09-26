@@ -20,7 +20,7 @@ make("Tween", function(Ease) {
 
 	Tween.prototype.destroy = function() {
 		this.duration = this.timePassed = this.onComplete = this.onUpdate
-			= this.delay = this.repeat = this.ease = this.startValues
+			= this.delay = this.delayRemaining = this.repeat = this.ease = this.startValues
 			= this.endValues = this.diffValues = this.target = null;
 	};
 
@@ -29,7 +29,7 @@ make("Tween", function(Ease) {
 		this.onCompleteParams = props.onCompleteParams;
 		this.onUpdate = props.onUpdate;
 		this.onUpdateParams = props.onUpdateParams;
-		this.delay = props.delay;
+		this.delay = this.delayRemaining = props.delay * 1000;
 		this.repeat = props.repeat;
 		this.ease = Ease[props.ease] || props.ease || Ease.outQuad;
 		this.startValues = {};
@@ -61,9 +61,17 @@ make("Tween", function(Ease) {
 	};
 
 	Tween.update = function(delta) {
-
 		for (var j = Tween.tweens.length; j--;) {
 			var tween = Tween.tweens[j];
+			if (tween.delayRemaining > 0) {
+				tween.delayRemaining -= delta;
+				if (tween.delayRemaining < 0) {
+					delta = Math.abs(tween.delayRemaining);
+				}
+				else {
+					continue;
+				}
+			}
 			tween.timePassed += delta;
 			var values = tween.startValues;
 			if (tween.timePassed >= tween.duration) {

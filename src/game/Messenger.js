@@ -10,7 +10,8 @@ make("Messenger", function(EventEmitter, ClassUtil) {
 		this.EVENTS = {
 			GAME: {
 				FRAME: "game-frame",
-				RESIZE: "game-resize"
+				RESIZE: "game-resize",
+				READY: "game-ready"
 			},
 			SPIN: {
 				BEGIN: "spin-begin",

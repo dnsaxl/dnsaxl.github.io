@@ -16,11 +16,21 @@ make("reelModel", function(ReelModel) {
 	return new ReelModel();
 });
 
+make("htmlMenuModel", function(HTMLMenuModel) {
+	return new HTMLMenuModel();
+});
+
+make("view", function(View) {
+	return new View();
+});
 
 make("layoutController", function(LayoutController) {
 	return new LayoutController();
 });
 
+make("htmlMenuController", function(HTMLMenuController) {
+	return new HTMLMenuController();
+});
 
 make("reelController", function(ReelController) {
 	return new ReelController();
@@ -30,9 +40,7 @@ make("msg", function(Messenger) {
 	return new Messenger();
 });
 
-make("view", function(View) {
-	return new View();
-});
+
 
 make("start", function(Game) {
 	return new Game();

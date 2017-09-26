@@ -13,14 +13,14 @@ make("SpinButton", function(Button, ClassUtil, msg) {
 	ClassUtil.extend(SpinButton, Button);
 
 	SpinButton.prototype.onMouseOver = function() {
-		this.scaleX += 0.1;
-		this.scaleY += 0.1;
+		this.scaleX *= 1.1;
+		this.scaleY *= 1.1;
 		this.zoomed = true;
 	};
 
 	SpinButton.prototype.onMouseOut = function() {
-		this.scaleX -= 0.1;
-		this.scaleY -= 0.1;
+		this.scaleX /= 1.1;
+		this.scaleY /= 1.1;
 		this.zoomed = false;
 	};
 

@@ -15,6 +15,7 @@ make("Game", function(ClassUtil, assetsModel, view, msg, reelModel) {
 			view.init();
 			msg.emit(msg.EVENTS.GAME.RESIZE);
 			view.hideSplashScreen();
+			msg.emit(msg.EVENTS.GAME.READY);
 		}, 1000);
 	};
 

@@ -1,8 +1,8 @@
-make("View", function(stage, GameBackground, SpinButton, SymbolsContainer, SplashScreen, GlobalMask) {
+make("View", function(stage, GameBackground, SpinButton, SymbolsContainer, SplashScreen, GlobalMask, HTMLMenu) {
 	"use strict";
 
 	function View() {
-
+		this.html = new HTMLMenu();
 	}
 
 	View.prototype.showSplashScreen = function() {

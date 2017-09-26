@@ -1,0 +1,36 @@
+
+#menu {
+    width: 30%;
+    height: 100%;
+    background-color: rgba(33, 33, 33, 0.5);
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: -30%;
+    display: table;
+    visibility: hidden;
+}
+
+.content {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+select {
+    padding: 10px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.hint {
+    width: 100%;
+    display: inline-block;
+    font: normal 32px/normal Helvetica, sans-serif;
+    color: rgba(255, 255, 255, 1);
+    text-align: center;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 1), 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de;
+}
