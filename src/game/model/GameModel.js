@@ -8,10 +8,6 @@ make("GameModel", function(ClassUtil, Model, stage) {
 	
 	ClassUtil.extend(GameModel, Model);
 
-	GameModel.prototype.getAssetsServerURL = function() {
-		return "./assets/";
-	};
-
 	Object.defineProperty(GameModel.prototype, "canvas", {
 		get: function() {
 			return this.stage.canvas;

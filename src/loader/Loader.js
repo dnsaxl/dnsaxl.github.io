@@ -8,16 +8,21 @@ make("Loader", function(ClassUtil, Resource) {
 		this.queue = [];
 		this.resources = {};
 		this.onComplete = null;
+		this.onFileLoaded = null;
+		this.numResourcesLoaded = 0;
+		this.numResourcesToLoad = 0;
 	}
 
-	Loader.prototype.load = function(paths, onComplete) {
+	Loader.prototype.load = function(paths, onComplete, onFileLoaded) {
 		if (!this.baseUrl || !paths) {
 			throw new Error("Invalid load directive. baseUrl: " + this.baseUrl + ", paths:" + paths);
 		}
 		this.onComplete = onComplete || this.onComplete;
+		this.onFileLoaded = onFileLoaded || this.onFileLoaded;
 		if (paths.constructor !== Array) {
 			paths = [paths];
 		}
+		this.numResourcesToLoad += paths.length;
 		this.queue = paths.concat(this.queue);
 		if (!this.isLoading) {
 			this.loadNext();
@@ -36,6 +41,7 @@ make("Loader", function(ClassUtil, Resource) {
 			if (this.resources[path]) {
 				throw new Error("Resource " + path + " already loaded");
 			}
+			this.numResourcesLoaded++;
 			this.resources[path] = resource;
 		}
 		else {
@@ -48,6 +54,9 @@ make("Loader", function(ClassUtil, Resource) {
 	Loader.prototype.onResourceComplete = function(resource) {
 		if (resource.data) {
 			this.parseSubLoads(resource.data);
+			if (this.onFileLoaded) {
+				this.onFileLoaded(resource);
+			}
 		}
 		else {
 			console.warn(this.baseUrl + resource.url, "not loaded");
@@ -61,6 +70,12 @@ make("Loader", function(ClassUtil, Resource) {
 			this.load(subloads);
 		}
 	};
+
+	Object.defineProperty(Loader.prototype, "progress", {
+		get: function() {
+			return this.numResourcesLoaded / this.numResourcesToLoad;
+		}
+	});
 
 	return Loader;
 });

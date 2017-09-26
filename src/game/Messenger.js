@@ -8,13 +8,13 @@ make("Messenger", function(EventEmitter, ClassUtil) {
 		this.PRIORITY_HIGH = 100;
 		this.PRIORITY_HIGHEST = 100;
 		this.EVENTS = {
-			GAME : {
-				FRAME : "game-frame",
-				RESIZE : "game-resize"
+			GAME: {
+				FRAME: "game-frame",
+				RESIZE: "game-resize"
 			},
-			SPIN : {
-				BEGIN : "spin-begin",
-				STOP : "spin-stop"
+			SPIN: {
+				BEGIN: "spin-begin",
+				STOP: "spin-stop"
 			}
 		};
 	}

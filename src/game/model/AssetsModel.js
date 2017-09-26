@@ -1,19 +1,36 @@
-make("AssetsModel", function(ClassUtil, Model, loader) {
+make("AssetsModel", function(ClassUtil, Model, Loader) {
 	"use strict";
 
 	function AssetsModel() {
 		Model.apply(this, arguments);
-		this.resources = {};
+		this.property("resources");
+		this.property("progress", 0);
+		this.loader = this.createLoader();
 	}
 
 	ClassUtil.extend(AssetsModel, Model);
-	
-	AssetsModel.prototype.load = function(onComplete) {
-	    loader.load(this.getAssetList(), function() {
-			this.resources = loader.resources;
-		    onComplete();
-	    }.bind(this));
 
+	AssetsModel.prototype.createLoader = function() {
+		var loader = new Loader();
+		loader.baseUrl = this.getAssetsServerURL();
+		loader.onComplete = this.onAllFilesLoaded;
+		loader.onFileLoaded = this.onSingleFileLoaded;
+		return loader;
+	};
+
+	AssetsModel.prototype.load = function() {
+		this.loader.load(this.getAssetList());
+	};
+
+	AssetsModel.prototype.onSingleFileLoaded = function(resource) {
+		this.progress = this.loader.progress;
+	};
+
+	AssetsModel.prototype.onAllFilesLoaded = function() {
+		this.resources = this.loader.resources;
+		if (this.onComplete) {
+			this.onComplete();
+		}
 	};
 
 	AssetsModel.prototype.getAssetList = function() {
@@ -22,14 +39,8 @@ make("AssetsModel", function(ClassUtil, Model, loader) {
 		];
 	};
 
-	AssetsModel.prototype.getMatching = function(regexp) {
-		var all = [];
-	    for(var name in this.resources){
-		    if(name.match(regexp)){
-			    all.push(this.resources[name]);
-		    }
-	    }
-		return all;
+	AssetsModel.prototype.getAssetsServerURL = function() {
+		return "./assets/";
 	};
 
 	return AssetsModel;

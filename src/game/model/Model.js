@@ -9,18 +9,23 @@ make("Model", function(ClassUtil, EventEmitter) {
 	ClassUtil.extend(Model, EventEmitter);
 
 	Model.prototype.property = function(property, defaultValue) {
-		this[property] = defaultValue;
+		var _value;
 		Object.defineProperty(this, property, {
 			get: function() {
-				return this[property];
+				return _value;
 			},
 			set: function(value) {
-				if (this[property] !== value) {
-					this[property] = value;
-					this.emit(property + "/changed", value);
+				if (_value !== value) {
+					var prev = _value;
+					_value = value;
+					this.emit(property + "-changed", value);
 				}
 			}
 		});
+
+		if (defaultValue !== undefined) {
+			this[property] = defaultValue;
+		}
 	};
 
 	return Model;

@@ -3,7 +3,8 @@ make("Game", function(ClassUtil, assetsModel, view, msg, reelModel) {
 
 	function Game() {
 		ClassUtil.bindAll(this);
-		assetsModel.load(this.onAssetsLoaded);
+		assetsModel.on("resources-changed", this.onAssetsLoaded);
+		assetsModel.load();
 	}
 
 	Game.prototype.onAssetsLoaded = function() {

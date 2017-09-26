@@ -26,10 +26,6 @@ make("reelController", function(ReelController) {
 	return new ReelController();
 });
 
-make("loader", function(Loader, gameModel) {
-	return new Loader(gameModel.getAssetsServerURL());
-});
-
 make("msg", function(Messenger) {
 	return new Messenger();
 });
