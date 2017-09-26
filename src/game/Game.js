@@ -5,7 +5,6 @@ make("Game", function(ClassUtil, assetsModel, view, msg, reelModel) {
 		ClassUtil.bindAll(this);
 		view.showSplashScreen();
 		msg.emit(msg.EVENTS.GAME.RESIZE);
-		console.log(view.splashScreen.x, view.splashScreen.y, view.splashScreen.width, view.splashScreen.height);
 		assetsModel.on("resources-changed", this.onAssetsLoaded);
 		assetsModel.load();
 	}

@@ -68,8 +68,8 @@ make("Text", function(DisplayObject, ClassUtil, stage) {
 		this.prepare(renderer);
 		for (var i = 0, j = this._lines.length; i < j; i++) {
 			renderer.fillText(this._lines[i],
-				this.world.x + this._lineWidths[i],
-				this.world.y + this._lineHeight * i
+				this.world.x + this._lineWidths[i] * this.world.sx,
+				this.world.y + this._lineHeight * i * this.world.sy
 			);
 		}
 		renderer.restore();
@@ -77,9 +77,8 @@ make("Text", function(DisplayObject, ClassUtil, stage) {
 
 	Text.prototype.prepare = function(renderer) {
 		renderer.textBaseline = "top";
-		renderer.font = this.style.font;
+		renderer.font = this.style.font.replace(/\d+/, String(Math.round(this._lineHeight * this.world.sy)));
 		renderer.fillStyle = this.style.fill;
-		renderer.scale(this.scaleX, this.scaleY);
 		renderer.globalAlpha = this.world.alpha;
 	};
 

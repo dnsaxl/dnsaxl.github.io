@@ -51,8 +51,8 @@ make("Container", function(DisplayObject, ClassUtil, MathUtil) {
 		var minx = 0, maxx = 0, miny = 0, maxy = 0;
 		for (var i = 0, j = this.children.length; i < j; ++i) {
 			var c = this.children[i];
-			var rx = c.x - c.anchorX * c.width;
-			var ry = c.y - c.anchorY * c.height;
+			var rx = c.x - c.anchorX * c.width + c.minX || 0;
+			var ry = c.y - c.anchorY * c.height + c.minY || 0;
 			minx = Math.min(rx, minx);
 			miny = Math.min(ry, miny);
 			maxx = Math.max(rx + c.width, maxx);

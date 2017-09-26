@@ -7,10 +7,9 @@ make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel) 
 	}
 
 	LayoutController.prototype.onResize = function(w, h) {
-		
-		if(view.splashScreen){
+
+		if (view.splashScreen) {
 			this.scale(view.splashScreen, layoutModel.splashScreen.scale);
-			//debugger;
 			this.align(view.splashScreen, layoutModel.splashScreen.horizontal, layoutModel.splashScreen.vertical);
 		}
 
