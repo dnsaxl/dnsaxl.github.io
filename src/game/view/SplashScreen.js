@@ -43,7 +43,8 @@ make("SplashScreen", function(Container, ClassUtil, Text, assetsModel, Graphics,
 
 	SplashScreen.prototype.hide = function() {
 		Tween.killByTarget(this);
-		Tween.to(this, 1.6, {alpha: 0, onComplete: this.onFadedOut});
+		console.log("pars 1.5");
+		Tween.to(this, 1.6, {alpha: 0, onComplete: this.onFadedOut, debug : true});
 	};
 
 	SplashScreen.prototype.onFadedOut = function() {

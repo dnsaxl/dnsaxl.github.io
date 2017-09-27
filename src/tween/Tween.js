@@ -5,7 +5,12 @@ make("Tween", function(Ease) {
 		this.target = target;
 		this.duration = time * 1000;
 		this.timePassed = 0;
+		this.props = props;
 		this.parseProperties(props);
+		if (!this.delayRemaining) {
+			this.parseValues();
+		}
+
 		Tween.tweens.push(this);
 	}
 
@@ -32,11 +37,15 @@ make("Tween", function(Ease) {
 		this.delay = this.delayRemaining = props.delay * 1000;
 		this.repeat = props.repeat;
 		this.ease = Ease[props.ease] || props.ease || Ease.outQuad;
+	};
+
+	Tween.prototype.parseValues = function() {
+		var props = this.props;
 		this.startValues = {};
 		this.endValues = {};
 		this.diffValues = {};
 		for (var property in props) {
-			var startValue = this.target[property];
+			var startValue = Number(this.target[property]);
 			if (!isNaN(startValue)) {
 				this.startValues[property] = startValue;
 				this.endValues[property] = props[property];
@@ -67,6 +76,8 @@ make("Tween", function(Ease) {
 				tween.delayRemaining -= delta;
 				if (tween.delayRemaining < 0) {
 					delta = Math.abs(tween.delayRemaining);
+					tween.parseValues();
+
 				}
 				else {
 					continue;
@@ -106,7 +117,7 @@ make("Tween", function(Ease) {
 	Tween.killByTarget = function(target) {
 		for (var j = Tween.tweens.length; j--;) {
 			var tween = Tween.tweens[j];
-			if (tween.t === target) {
+			if (tween.target === target) {
 				Tween.tweens.splice(j, 1);
 				tween.destroy();
 			}

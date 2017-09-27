@@ -36,6 +36,10 @@ make("reelController", function(ReelController) {
 	return new ReelController();
 });
 
+make("gameController", function(GameController) {
+	return new GameController();
+});
+
 make("msg", function(Messenger) {
 	return new Messenger();
 });

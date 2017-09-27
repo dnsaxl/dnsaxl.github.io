@@ -11,7 +11,7 @@
     visibility: hidden;
 }
 
-.content {
+#content {
     display: table-cell;
     vertical-align: middle;
 }

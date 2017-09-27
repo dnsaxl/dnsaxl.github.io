@@ -15,7 +15,10 @@ make("Messenger", function(EventEmitter, ClassUtil) {
 			},
 			SPIN: {
 				BEGIN: "spin-begin",
-				STOP: "spin-stop"
+				STOP: "spin-stop",
+				READY: "spin-ready",
+				WON: "spin-won",
+				LOST: "spin-lost"
 			}
 		};
 	}

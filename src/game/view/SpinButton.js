@@ -40,10 +40,10 @@ make("SpinButton", function(Button, ClassUtil, msg) {
 	SpinButton.prototype.onClick = function() {
 		this.enabled = false;
 		msg.emit(msg.EVENTS.SPIN.BEGIN);
-		msg.once(msg.EVENTS.SPIN.STOP, this.onSpinStop);
+		msg.once(msg.EVENTS.SPIN.READY, this.onSpinReady);
 	};
 
-	SpinButton.prototype.onSpinStop = function() {
+	SpinButton.prototype.onSpinReady = function() {
 		this.enabled = true;
 	};
 	return SpinButton;

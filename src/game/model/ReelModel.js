@@ -19,7 +19,11 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		this.ranges = this.createRanges();
 		this.track = this.generateRandomReelTrack(this.trackLength);
 		this._iterator = -1;
-		this.finalSymbols = this.generateRandomReelTrack(this.NUM_ROWS);
+		this.finalSymbolNames = this.generateRandomReelTrack(this.NUM_ROWS);
+		this.finalSymbols =[];
+
+		this.accelerationEasing = "inBack";
+		this.deccelerationEasing = "outBack";
 	}
 
 	ClassUtil.extend(ReelModel, Model);
@@ -45,7 +49,6 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		this.reels = this.createReels();
 		this.movement(0, 0);
 		this.setSymbols();
-		this.log(0);
 	};
 
 	ReelModel.prototype.generateRandomReelTrack = function(length) {
@@ -60,7 +63,8 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		if (this.isOnFinalStretch(distanceRemaining, symbol)) {
 			var row = this.getRow(distanceRemaining + symbol.y);
 			if (!isNaN(row)) {
-				return this.finalSymbols[row];
+				this.finalSymbols[row] = symbol;
+				return this.finalSymbolNames[row];
 			}
 		}
 		return this.track[++this._iterator % this.trackLength];
@@ -125,7 +129,6 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		});
 		this.deccelerationDistance = this.totalHeight - max;
 		this.deccelerationDuration = this.deccelerationDistance / this.accelerationSpeed;
-		console.log("credit-distance", this.deccelerationDistance, "when done", this.deccelerationDistance + max);
 	};
 
 	Object.defineProperty(ReelModel.prototype, "accelerationSpeed", {
@@ -134,29 +137,11 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		}
 	});
 
-	Object.defineProperty(ReelModel.prototype, "isSpinning", {
-		get: function() {
-			return this._isSpinning;
-		},
-		set: function(value) {
-			this._isSpinning = value;
-			if (value) {
-				this.resetSession();
-			}
-		}
-	});
-
 	ReelModel.prototype.resetSession = function() {
 		this._iterator = -1;
-		this.finalSymbols = this.generateRandomReelTrack(this.NUM_ROWS);
-		console.log("to win:", this.finalSymbols);
-	};
-
-	ReelModel.prototype.log = function(reel) {
-		console.log("REEL", reel);
-		this.reels[reel].map(function(symbol) {
-			console.log(symbol.y);
-		});
+		this.finalSymbols = [];
+		this.finalSymbolNames = ["SYM3", "SYM1", "SYM1"];//this.generateRandomReelTrack(this.NUM_ROWS);
+		console.log("to win:", this.finalSymbolNames);
 	};
 
 	return ReelModel;

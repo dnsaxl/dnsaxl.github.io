@@ -1,4 +1,4 @@
-make("Symbol", function(Container, ClassUtil, Sprite) {
+make("Symbol", function(Container, ClassUtil, Sprite, BlendModes, Tween, msg) {
 	"use strict";
 
 	function Symbol() {
@@ -27,6 +27,27 @@ make("Symbol", function(Container, ClassUtil, Sprite) {
 		else {
 			this.image.setFrame(url);
 		}
+	};
+
+	Symbol.prototype.showWin = function() {
+		this.image.blendMode = BlendModes.SCREEN;
+		this.scaleUp();
+		msg.once(msg.EVENTS.SPIN.BEGIN, this.reset);
+	};
+
+	Symbol.prototype.scaleUp = function() {
+		var scale = 1.3;
+		Tween.to(this, 0.6, {scaleX: scale, scaleY: scale, onComplete: this.scaleDown});
+	};
+
+	Symbol.prototype.scaleDown = function() {
+		Tween.to(this, 0.6, {scaleX: 1, scaleY: 1, onComplete: this.scaleUp});
+	};
+
+	Symbol.prototype.reset = function() {
+		Tween.killByTarget(this);
+		this.setScale(1);
+		this.image.blendMode = BlendModes.SOURCE.OVER;
 	};
 
 	return Symbol;
