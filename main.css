@@ -1,3 +1,22 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-size: 16px;
+}
+
+canvas {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+    position: fixed;
+}
 
 #menu {
     width: 30%;
@@ -20,17 +39,22 @@ select {
     padding: 10px;
     display: block;
     margin: 0 auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-size: 22px;
+    text-align-last:center;
+    background-color: white;
 }
 
 .hint {
     width: 100%;
     display: inline-block;
-    font: normal 32px/normal Helvetica, sans-serif;
+    font: normal 18px normal Helvetica, sans-serif;
     color: rgba(255, 255, 255, 1);
     text-align: center;
     -o-text-overflow: clip;
     text-overflow: clip;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 1), 0 0 40px #ff00de, 0 0 70px #ff00de, 0 0 80px #ff00de, 0 0 100px #ff00de;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 1), 0 0 10px rgba(255, 255, 255, 1), 0 0 15px rgba(255, 255, 255, 1), 0 0 20px #ff00de, 0 0 50px #ff00de, 0 0 55px #ff00de, 0 0 65px #ff00de;
 }

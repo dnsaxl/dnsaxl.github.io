@@ -9,12 +9,20 @@ make("HTMLMenuController", function(ClassUtil, msg, Tween, view, htmlMenuModel) 
 		msg.on(msg.EVENTS.SPIN.WON, this.onSpinWon);
 		msg.on(msg.EVENTS.SPIN.LOST, this.onSpinLost);
 		msg.on(msg.EVENTS.SPIN.READY, this.onSpinReady);
+		view.html.dropdown.onchange = this.onDropdownChange;
 	}
 
 	HTMLMenuController.prototype.onGameReady = function() {
 		this.tweenObject.x = -view.html.topContainer.clientWidth;
 		Tween.to(this.tweenObject, 0.4, {delay: 0.6, x: 0, onUpdate: this.onTweenUpdate});
 		view.html.topContainer.style.visibility = "visible";
+		this.setText(view.html.topHint, htmlMenuModel.text.idle.top);
+		this.setText(view.html.bottomHint, htmlMenuModel.text.idle.bottom);
+	};
+
+	HTMLMenuController.prototype.onDropdownChange = function() {
+		htmlMenuModel.selectedValue = view.html.getSelectedValue();
+		msg.emit(msg.EVENTS.GAME.RESIZE);
 	};
 
 	HTMLMenuController.prototype.onTweenUpdate = function() {

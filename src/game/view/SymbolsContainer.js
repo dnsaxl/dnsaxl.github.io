@@ -3,7 +3,6 @@ make("SymbolsContainer", function(Container, ClassUtil, reelModel) {
 
 	function SymbolsContainer() {
 		Container.apply(this, arguments);
-		
 		reelModel.reels.map(this.addReel);
 	}
 

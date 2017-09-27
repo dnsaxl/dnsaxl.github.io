@@ -10,20 +10,16 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		this.MIN_SPINNING_TIME = 1.5;
 		this.accelerationDuration = 0.8;
 		this.accelerationDistance = 600;
-		this.trackLength = 60;
-		this.SYMBOL_TYPES = ["SYM1", "SYM3", "SYM4", "SYM5", "SYM6", "SYM7"];
+		this.accelerationEasing = "inBack";
+		this.deccelerationEasing = "outBack";
 
+		this.SYMBOL_TYPES = ["SYM1", "SYM3", "SYM4", "SYM5", "SYM6", "SYM7"];
 		this.numReelSymbols = this.NUM_ROWS + 2;
 		this.totalHeight = this.numReelSymbols * this.SYMBOLS_GAP;
 		this.bottomBorder = this.NUM_ROWS * this.SYMBOLS_GAP;
-		this.ranges = this.createRanges();
-		this.track = this.generateRandomReelTrack(this.trackLength);
-		this._iterator = -1;
-		this.finalSymbolNames = this.generateRandomReelTrack(this.NUM_ROWS);
-		this.finalSymbols =[];
 
-		this.accelerationEasing = "inBack";
-		this.deccelerationEasing = "outBack";
+		this.resetSession();
+		this.ranges = this.createRanges();
 	}
 
 	ClassUtil.extend(ReelModel, Model);
@@ -67,7 +63,7 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 				return this.finalSymbolNames[row];
 			}
 		}
-		return this.track[++this._iterator % this.trackLength];
+		return this.track[++this._iterator % this.track.length];
 	};
 
 	ReelModel.prototype.isOnFinalStretch = function(distanceRemaining, symbol) {
@@ -140,7 +136,8 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 	ReelModel.prototype.resetSession = function() {
 		this._iterator = -1;
 		this.finalSymbols = [];
-		this.finalSymbolNames = ["SYM3", "SYM1", "SYM1"];//this.generateRandomReelTrack(this.NUM_ROWS);
+		this.finalSymbolNames = this.generateRandomReelTrack(this.NUM_ROWS);
+		this.track = this.generateRandomReelTrack(60);
 		console.log("to win:", this.finalSymbolNames);
 	};
 
