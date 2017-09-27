@@ -1,15 +1,15 @@
-make("SymbolsContainer", function(Container, ClassUtil, reelModel) {
+make("SymbolsContainer", function(Container, ClassUtil, spinModel) {
 	"use strict";
 
 	function SymbolsContainer() {
 		Container.apply(this, arguments);
-		reelModel.reels.map(this.addReel);
+		spinModel.reels.map(this.addReel);
 	}
 
 	ClassUtil.extend(SymbolsContainer, Container);
 
 	SymbolsContainer.prototype.addReel = function(reel) {
-	    reel.map(this.addChild);
+	    reel.symbols.map(this.addChild);
 	};
 
 	return SymbolsContainer;

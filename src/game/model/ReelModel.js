@@ -1,12 +1,12 @@
-make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
+make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol, gameModel) {
 	"use strict";
 
-	function ReelModel() {
+	function ReelModel(reelId) {
 		Model.apply(this, arguments);
-		this.NUM_ROWS = 3;
-		this.NUM_COLUMNS = 1;
+		this.reelId = reelId;
+		this.NUM_ROWS = gameModel.numRows;
 		this.SYMBOLS_GAP = 180;
-		this.REEL_GAP = 300;
+		this.horizontalOffset = this.getHorizontalOffset();
 		this.MIN_SPINNING_TIME = 1.5;
 		this.accelerationDuration = 0.8;
 		this.accelerationDistance = 600;
@@ -18,11 +18,24 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		this.totalHeight = this.numReelSymbols * this.SYMBOLS_GAP;
 		this.bottomBorder = this.NUM_ROWS * this.SYMBOLS_GAP;
 
-		this.resetSession();
+		this._iterator = -1;
+		this.finalSymbols = [];
+
 		this.ranges = this.createRanges();
+		this.symbols = this.createSymbols();
+		this.resetSession();
+		this.setSymbols(this.symbols);
+		this.movement(0, 0);
 	}
 
 	ClassUtil.extend(ReelModel, Model);
+
+	ReelModel.prototype.getHorizontalOffset = function() {
+		var pos = gameModel.reelGap * (this.reelId + 1);
+		var wid = gameModel.reelGap * (gameModel.numReels - 1);
+		var sub = (wid / 2 + gameModel.reelGap);
+		return pos - sub;
+	};
 
 	ReelModel.prototype.createRanges = function() {
 		var ranges = [];
@@ -33,26 +46,36 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		return ranges;
 	};
 
-	ReelModel.prototype.getRow = function(position) {
-		for (var i = this.ranges.length; i--;) {
-			if (position > this.ranges[i]) {
-				return i < this.NUM_ROWS ? i : undefined;
+	ReelModel.prototype.createSymbols = function() {
+		var symbols = [];
+		for (var i = 0, j = this.numReelSymbols; i < j; i++) {
+			symbols.push(this.createSymbol(this.reelId, i));
+		}
+		return symbols;
+	};
+
+	ReelModel.prototype.createSymbol = function(reelId, index) {
+		var symbol = new Symbol();
+		symbol.setAnchor(0.5);
+		symbol.x = this.horizontalOffset;
+		symbol.y = index * this.SYMBOLS_GAP;
+		return symbol;
+	};
+
+	ReelModel.prototype.setSymbols = function(symbols) {
+		for (var i = 0, j = symbols.length; i < j; i++) {
+			symbols[i].type = this.getNextSymbolType();
+		}
+	};
+
+	ReelModel.prototype.movement = function(delta, distanceRemaining) {
+		this.symbols.map(function(symbol) {
+			symbol.y += delta;
+			if (symbol.y >= this.bottomBorder) {
+				symbol.y -= this.totalHeight;
+				symbol.type = this.getNextSymbolType(distanceRemaining, symbol);
 			}
-		}
-	};
-
-	ReelModel.prototype.init = function() {
-		this.reels = this.createReels();
-		this.movement(0, 0);
-		this.setSymbols();
-	};
-
-	ReelModel.prototype.generateRandomReelTrack = function(length) {
-		var track = [];
-		while (length--) {
-			track.push(MathUtil.getRandomElement(this.SYMBOL_TYPES));
-		}
-		return track;
+		}.bind(this));
 	};
 
 	ReelModel.prototype.getNextSymbolType = function(distanceRemaining, symbol) {
@@ -70,55 +93,32 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 		return distanceRemaining < this.totalHeight && (symbol.y + distanceRemaining < this.bottomBorder)
 	};
 
-	ReelModel.prototype.createReels = function() {
-		var reels = [];
-		for (var i = 0; i < this.NUM_COLUMNS; i++) {
-			reels.push(this.createReel(i));
-		}
-		return reels;
-	};
-
-	ReelModel.prototype.createReel = function(reelId) {
-		var reel = [];
-		for (var i = 0, j = this.numReelSymbols; i < j; i++) {
-			reel.push(this.createSymbol(reelId, i));
-		}
-		return reel;
-	};
-
-	ReelModel.prototype.createSymbol = function(reelId, index) {
-		var symbol = new Symbol();
-		symbol.setAnchor(0.5);
-		symbol.x = reelId * this.REEL_GAP;
-		symbol.y = index * this.SYMBOLS_GAP;
-		return symbol;
-	};
-
-	ReelModel.prototype.setSymbols = function() {
-		for (var i = 0; i < this.NUM_COLUMNS; i++) {
-			this.setSymbolsForReel(this.reels[i]);
-		}
-	};
-
-	ReelModel.prototype.setSymbolsForReel = function(reel) {
-		for (var i = 0, j = reel.length; i < j; i++) {
-			reel[i].type = this.getNextSymbolType();
-		}
-	};
-
-	ReelModel.prototype.movement = function(delta, reel, distanceRemaining) {
-		this.reels[reel].map(function(symbol) {
-			symbol.y += delta;
-			if (symbol.y >= this.bottomBorder) {
-				symbol.y -= this.totalHeight;
-				symbol.type = this.getNextSymbolType(distanceRemaining, symbol);
+	ReelModel.prototype.getRow = function(position) {
+		for (var i = this.ranges.length; i--;) {
+			if (position > this.ranges[i]) {
+				return i < this.NUM_ROWS ? i : undefined;
 			}
-		}.bind(this));
+		}
 	};
 
-	ReelModel.prototype.findDecelerationDistance = function(reel) {
+	ReelModel.prototype.resetSession = function() {
+		this._iterator = -1;
+		this.finalSymbols = [];
+		this.finalSymbolNames = this.generateRandomReelTrack(this.NUM_ROWS);
+		this.track = this.generateRandomReelTrack(60);
+	};
+
+	ReelModel.prototype.generateRandomReelTrack = function(length) {
+		var track = [];
+		while (length--) {
+			track.push(MathUtil.getRandomElement(this.SYMBOL_TYPES));
+		}
+		return track;
+	};
+
+	ReelModel.prototype.findDecelerationDistance = function() {
 		var max = Math.min();
-		this.reels[reel].map(function(symbol) {
+		this.symbols.map(function(symbol) {
 			if (Math.abs(symbol.y) < max) {
 				max = symbol.y;
 			}
@@ -132,14 +132,6 @@ make("ReelModel", function(ClassUtil, Model, MathUtil, Symbol) {
 			return this.accelerationDistance / this.accelerationDuration;
 		}
 	});
-
-	ReelModel.prototype.resetSession = function() {
-		this._iterator = -1;
-		this.finalSymbols = [];
-		this.finalSymbolNames = this.generateRandomReelTrack(this.NUM_ROWS);
-		this.track = this.generateRandomReelTrack(60);
-		console.log("to win:", this.finalSymbolNames);
-	};
 
 	return ReelModel;
 });

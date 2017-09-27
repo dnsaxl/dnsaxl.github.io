@@ -4,6 +4,9 @@ make("GameModel", function(ClassUtil, Model, stage) {
 	function GameModel() {
 		Model.apply(this, arguments);
 		this.stage = stage;
+		this.numReels = 1;
+		this.numRows = 3;
+		this.reelGap = 200;
 		this.wonSpinTimeout = 1000;
 		this.lostSpinTimeout = 500;
 	}

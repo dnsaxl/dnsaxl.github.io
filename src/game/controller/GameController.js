@@ -1,4 +1,4 @@
-make("GameController", function(ClassUtil, msg, gameModel, reelModel, htmlMenuModel) {
+make("GameController", function(ClassUtil, msg, gameModel, spinModel, htmlMenuModel) {
 	"use strict";
 
 	function GameController() {
@@ -6,23 +6,24 @@ make("GameController", function(ClassUtil, msg, gameModel, reelModel, htmlMenuMo
 		msg.on(msg.EVENTS.SPIN.STOP, this.onSpinStop, msg.PRIORITY_HIGHEST);
 		msg.on(msg.EVENTS.SPIN.BEGIN, this.onSpinBegin, msg.PRIORITY_HIGHEST);
 	}
-	
+
 	GameController.prototype.onSpinBegin = function() {
 		gameModel.hasWon = false;
 	};
 
 	GameController.prototype.onSpinStop = function() {
-		gameModel.hasWon = htmlMenuModel.selectedValue === reelModel.finalSymbolNames[1];
+		var middleSymbol = spinModel.getSymbolAt(0, 1);
+		gameModel.hasWon = htmlMenuModel.selectedValue === middleSymbol.type;
 		if (gameModel.hasWon) {
-			this.onWinSpin();
+			this.onWinSpin(middleSymbol);
 		}
 		else {
 			this.onLooseSpin();
 		}
 	};
 
-	GameController.prototype.onWinSpin = function() {
-		reelModel.finalSymbols[1].showWin();
+	GameController.prototype.onWinSpin = function(winningSymbol) {
+		winningSymbol.showWin();
 		msg.emit(msg.EVENTS.SPIN.WON);
 		setTimeout(this.emitSpinReady, gameModel.wonSpinTimeout);
 	};

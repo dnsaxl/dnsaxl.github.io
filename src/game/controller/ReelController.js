@@ -1,20 +1,24 @@
-make("ReelController", function(ClassUtil, msg, Tween, reelModel) {
+make("ReelController", function(ClassUtil, msg, Tween) {
 	"use strict";
 
-	function ReelController() {
+	function ReelController(model) {
 		ClassUtil.bindAll(this);
-		msg.on(msg.EVENTS.SPIN.BEGIN, this.onSpinBegin);
+		this.reelModel = model;
 		this.tween = {y: 0};
 		this.lastValues = [0];
+		msg.on(msg.EVENTS.REEL.START, this.onReelStart);
 	}
 
-	ReelController.prototype.onSpinBegin = function() {
+	ReelController.prototype.onReelStart = function(reelId) {
+		if (reelId !==this.reelModel.reelId) {
+			return;
+		}
 		this.lastValues = [0];
 		this.tween.y = 0;
-		reelModel.resetSession();
-		Tween.to(this.tween, reelModel.accelerationDuration, {
-			y: reelModel.accelerationDistance,
-			ease: reelModel.accelerationEasing,
+		this.reelModel.resetSession();
+		Tween.to(this.tween, this.reelModel.accelerationDuration, {
+			y: this.reelModel.accelerationDistance,
+			ease: this.reelModel.accelerationEasing,
 			onUpdate: this.passDeltaToSymbols,
 			onComplete: this.onAccelerateTweenComplete
 		});
@@ -23,7 +27,7 @@ make("ReelController", function(ClassUtil, msg, Tween, reelModel) {
 	ReelController.prototype.onAccelerateTweenComplete = function() {
 		this.lastValues.pop(); // onUpdate is called along with onComplete too
 		this.speed = this.lastValues.pop() - this.lastValues.pop();
-		this.maintainSpinSpeed(reelModel.MIN_SPINNING_TIME);
+		this.maintainSpinSpeed(this.reelModel.MIN_SPINNING_TIME);
 	};
 
 	ReelController.prototype.maintainSpinSpeed = function(duration) {
@@ -36,17 +40,17 @@ make("ReelController", function(ClassUtil, msg, Tween, reelModel) {
 	};
 
 	ReelController.prototype.onMaintainTweenUpdate = function() {
-		reelModel.movement(this.speed, 0);
+		this.reelModel.movement(this.speed);
 	};
 
 	ReelController.prototype.onMaintainTweenComplete = function() {
 		this.tween.y = 0;
 		this.lastValues = [0];
-		reelModel.findDecelerationDistance(0);
-		var distance = reelModel.deccelerationDistance;
-		Tween.to(this.tween, reelModel.deccelerationDuration, {
+		this.reelModel.findDecelerationDistance();
+		var distance = this.reelModel.deccelerationDistance;
+		Tween.to(this.tween, this.reelModel.deccelerationDuration, {
 			y: distance,
-			ease: reelModel.deccelerationEasing,
+			ease: this.reelModel.deccelerationEasing,
 			onUpdate: this.passDeltaToSymbols,
 			onUpdateParams: [distance],
 			onComplete: this.onDecelerateTweenComplete
@@ -54,17 +58,17 @@ make("ReelController", function(ClassUtil, msg, Tween, reelModel) {
 	};
 
 	ReelController.prototype.onDecelerateTweenComplete = function() {
-		msg.emit(msg.EVENTS.SPIN.STOP);
+		msg.emit(msg.EVENTS.REEL.STOP, this.reelModel.reelId);
 	};
 
 	ReelController.prototype.passDeltaToSymbols = function(targetValue) {
 		var delta = this.tween.y - this.lastValues[this.lastValues.length - 1];
 		this.lastValues.push(this.tween.y);
 		if (targetValue) {
-			reelModel.movement(delta, 0, targetValue - this.tween.y);
+			this.reelModel.movement(delta, targetValue - this.tween.y);
 		}
 		else {
-			reelModel.movement(delta, 0);
+			this.reelModel.movement(delta);
 		}
 	};
 

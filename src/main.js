@@ -8,12 +8,12 @@ make("gameModel", function(GameModel) {
 	return new GameModel();
 });
 
-make("layoutModel", function(LayoutModel) {
-	return new LayoutModel();
+make("spinModel", function(SpinModel) {
+	return new SpinModel();
 });
 
-make("reelModel", function(ReelModel) {
-	return new ReelModel();
+make("layoutModel", function(LayoutModel) {
+	return new LayoutModel();
 });
 
 make("htmlMenuModel", function(HTMLMenuModel) {
@@ -32,18 +32,17 @@ make("htmlMenuController", function(HTMLMenuController) {
 	return new HTMLMenuController();
 });
 
-make("reelController", function(ReelController) {
-	return new ReelController();
-});
-
 make("gameController", function(GameController) {
 	return new GameController();
+});
+
+make("spinController", function(SpinController) {
+	return new SpinController();
 });
 
 make("msg", function(Messenger) {
 	return new Messenger();
 });
-
 
 
 make("start", function(Game) {

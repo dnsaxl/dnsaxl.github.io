@@ -1,4 +1,4 @@
-make("Game", function(ClassUtil, assetsModel, view, msg, reelModel) {
+make("Game", function(ClassUtil, assetsModel, view, msg, spinModel) {
 	"use strict";
 
 	function Game() {
@@ -11,7 +11,7 @@ make("Game", function(ClassUtil, assetsModel, view, msg, reelModel) {
 
 	Game.prototype.onAssetsLoaded = function() {
 		setTimeout(function() {
-			reelModel.init();
+			spinModel.init();
 			view.init();
 			msg.emit(msg.EVENTS.GAME.RESIZE);
 			view.hideSplashScreen();
