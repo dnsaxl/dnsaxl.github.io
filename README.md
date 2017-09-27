@@ -1,0 +1,2 @@
+# vanilaslot.github.io
+vanilaslot
