@@ -14,7 +14,6 @@ make("Stage", function(ClassUtil, Container, Tween, Interaction) {
 	ClassUtil.extend(Stage, Container);
 
 	Stage.prototype.createCanvas = function() {
-		document.body.style.margin = 0;
 		var canvas = document.createElement('canvas');
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;

@@ -15,9 +15,5 @@ make("ObjectUtil", function() {
 		});
 	};
 
-	ObjectUtil.clone = function(obj) {
-		return JSON.parse(JSON.stringify(obj));
-	};
-
 	return ObjectUtil;
 });

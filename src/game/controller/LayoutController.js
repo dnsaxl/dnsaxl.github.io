@@ -33,7 +33,6 @@ make("LayoutController", function(ClassUtil, msg, view, gameModel, layoutModel, 
 
 			if (view.html) {
 				view.html.topContainer.style.height = view.background.height + "px";
-				view.html.topContainer.style.left = "0px";
 			}
 		}
 	};
