@@ -16,7 +16,7 @@ make("SpinController", function(ClassUtil, msg, gameModel) {
 	};
 
 	SpinController.prototype.onReelStop = function() {
-		if(--this.reelsToStop <= 0){
+		if(--this.reelsToStop < 0){
 			msg.emit(msg.EVENTS.SPIN.STOP);
 		}
 	};
